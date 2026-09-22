@@ -1,0 +1,188 @@
+/* =========================================================
+   MIS FINANZAS — Sistema de diseño propio
+   Paleta cálida: verde (ingresos/crecimiento), oro (metas/ahorro),
+   terracota (gastos), azul (informativo/saldo)
+   ========================================================= */
+
+:root{
+  --verde: #4C9A6B;
+  --verde-suave: #E4F2E9;
+  --oro: #D9A441;
+  --oro-suave: #FBF0DC;
+  --terracota: #C1543C;
+  --terracota-suave: #F7E4DF;
+  --azul: #3D6EBC;
+  --azul-suave: #E1EDF3;
+  --bg: #FBF7F0;
+  --card-bg: #FFFFFF;
+  --text: #2E2A25;
+  --text-muted: #8A8074;
+  --border: #EEE6D8;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  padding-bottom: 0;
+}
+
+/* ---- Nav superior ---- */
+.navbar-top{
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+}
+.brand{ color: var(--text) !important; font-size: 1.15rem; }
+.brand i{ color: var(--verde); }
+
+.nav-link-item{
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: .5rem .75rem;
+  border-radius: .5rem;
+  font-size: .95rem;
+  font-weight: 500;
+}
+.nav-link-item i{ margin-right: .25rem; }
+.nav-link-item:hover{ background: var(--verde-suave); color: var(--verde); }
+.nav-link-item.active{ background: var(--verde-suave); color: var(--verde); }
+
+/* ---- Botones de marca ---- */
+.btn-oro{ background: var(--oro); border-color: var(--oro); color: #fff; }
+.btn-oro:hover{ background: #c1902f; border-color: #c1902f; color: #fff; }
+
+.btn-outline-verde{ border-color: var(--verde); color: var(--verde); }
+.btn-check:checked + .btn-outline-verde{ background: var(--verde); color: #fff; }
+
+.btn-outline-terracota{ border-color: var(--terracota); color: var(--terracota); }
+.btn-check:checked + .btn-outline-terracota{ background: var(--terracota); color: #fff; }
+
+.btn-filtro{
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.btn-filtro.active{ background: var(--verde); color: #fff; border-color: var(--verde); }
+
+/* ---- Tarjetas ---- */
+.card{
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: .9rem;
+}
+.resumen-card .card-body{ padding: 1rem; }
+
+.icon-badge{
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: .5rem;
+  font-size: 1rem;
+}
+.bg-azul{ background: var(--azul-suave); color: var(--azul); }
+.bg-verde-suave{ background: var(--verde-suave); color: var(--verde); }
+.bg-terracota-suave{ background: var(--terracota-suave); color: var(--terracota); }
+.bg-oro-suave{ background: var(--oro-suave); color: var(--oro); }
+
+.text-verde{ color: var(--verde) !important; }
+.text-terracota{ color: var(--terracota) !important; }
+.text-oro{ color: var(--oro) !important; }
+
+/* ---- Tipo de cambio ---- */
+.tc-chip{
+  background: var(--azul-suave);
+  border-radius: .6rem;
+  padding: .6rem .8rem;
+  display: flex; flex-direction: column;
+}
+.tc-chip-label{ font-size: .75rem; color: var(--text-muted); }
+.tc-chip-value{ font-weight: 700; color: var(--azul); font-size: 1.05rem; }
+
+/* ---- Movimientos ---- */
+.mov-item{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .6rem .8rem;
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  background: var(--card-bg);
+}
+.mov-item .mov-icono{
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-right: .7rem; flex-shrink: 0;
+}
+.mov-info{ display:flex; align-items:center; }
+.mov-desc{ font-weight: 600; font-size: .92rem; }
+.mov-meta{ font-size: .78rem; color: var(--text-muted); }
+.mov-monto{ font-weight: 700; white-space: nowrap; }
+.mov-monto.ingreso{ color: var(--verde); }
+.mov-monto.gasto{ color: var(--terracota); }
+.mov-borrar{
+  background: none; border: none; color: var(--text-muted);
+  margin-left: .6rem;
+}
+.mov-borrar:hover{ color: var(--terracota); }
+
+/* ---- Categorías (barras) ---- */
+.cat-row .cat-head{ display:flex; justify-content:space-between; font-size:.88rem; margin-bottom:.25rem;}
+.cat-bar{ height: 8px; border-radius: 4px; background: var(--border); overflow:hidden; }
+.cat-bar-fill{ height: 100%; background: var(--verde); border-radius: 4px; }
+
+/* ---- Metas ---- */
+.meta-card{
+  border: 1px solid var(--border);
+  border-radius: .9rem;
+  padding: 1rem;
+  background: var(--card-bg);
+  height: 100%;
+}
+.meta-card.lograda{ background: var(--oro-suave); border-color: var(--oro); }
+.meta-progreso{ height: 10px; border-radius: 5px; background: var(--border); overflow:hidden; margin: .6rem 0; }
+.meta-progreso-fill{ height: 100%; background: var(--oro); border-radius: 5px; }
+.meta-divisas{ font-size: .78rem; color: var(--text-muted); }
+
+/* ---- Aprende ---- */
+.aprende-card{
+  border: 1px solid var(--border);
+  border-radius: .9rem;
+  padding: 1rem;
+  background: var(--card-bg);
+  height: 100%;
+}
+.aprende-card i{ color: var(--oro); font-size: 1.4rem; margin-bottom: .4rem; display:block; }
+
+/* ---- Nav inferior (celular) ---- */
+.navbar-bottom{
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around; align-items: center;
+  padding: .4rem 0;
+  z-index: 1030;
+}
+.nav-bottom-item{
+  display: flex; flex-direction: column; align-items: center;
+  font-size: .68rem; color: var(--text-muted); text-decoration: none;
+  gap: .15rem;
+}
+.nav-bottom-item i{ font-size: 1.2rem; }
+.nav-bottom-item.active{ color: var(--verde); }
+.nav-bottom-add{
+  background: var(--oro); color: #fff; border: none;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; margin-top: -22px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+
+/* ---- Responsividad ---- */
+@media (max-width: 767.98px){
+  .row.g-3 > .col-6.col-lg-3{ flex: 0 0 50%; max-width: 50%; }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px){
+  .brand-text{ display:none; }
+  .nav-link-item span{ display:none; }
+}

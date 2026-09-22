@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Finanzas</title>
+
+  <!-- Bootstrap 5 (CDN) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== NAV SUPERIOR (escritorio / tablet) ===== -->
+  <nav class="navbar navbar-expand-md navbar-top sticky-top">
+    <div class="container-fluid px-3 px-md-4">
+      <a class="navbar-brand fw-bold brand" href="#" data-view="inicio">
+        <i class="bi bi-wallet2"></i> <span class="brand-text">Mis Finanzas</span>
+      </a>
+
+      <div class="nav-links d-none d-md-flex gap-1 order-md-2">
+        <a class="nav-link-item active" data-view="inicio" href="#"><i class="bi bi-house"></i> Inicio</a>
+        <a class="nav-link-item" data-view="movimientos" href="#"><i class="bi bi-arrow-left-right"></i> Movimientos</a>
+        <a class="nav-link-item" data-view="metas" href="#"><i class="bi bi-piggy-bank"></i> Metas</a>
+        <a class="nav-link-item" data-view="aprende" href="#"><i class="bi bi-mortarboard"></i> Aprende</a>
+      </div>
+
+      <div class="d-flex align-items-center gap-2 order-md-3">
+        <button class="btn btn-oro btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#modalMovimiento">
+          <i class="bi bi-plus-circle"></i> <span class="d-none d-lg-inline">Nuevo movimiento</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4 pb-5 mb-5 mb-md-0">
+
+    <!-- ===================== VISTA: INICIO ===================== -->
+    <section id="view-inicio" class="view">
+      <h2 class="mb-1">Hola 👋</h2>
+      <p class="text-muted mb-4">Este es el resumen de tus finanzas.</p>
+
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+          <div class="card resumen-card">
+            <div class="card-body">
+              <div class="icon-badge bg-azul"><i class="bi bi-cash-stack"></i></div>
+              <p class="mb-0 small text-muted">Saldo total</p>
+              <h4 class="mb-0" id="kpi-saldo">$0.00</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card resumen-card">
+            <div class="card-body">
+              <div class="icon-badge bg-verde-suave"><i class="bi bi-graph-up-arrow"></i></div>
+              <p class="mb-0 small text-muted">Ingresos del mes</p>
+              <h4 class="mb-0 text-verde" id="kpi-ingresos">$0.00</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card resumen-card">
+            <div class="card-body">
+              <div class="icon-badge bg-terracota-suave"><i class="bi bi-graph-down-arrow"></i></div>
+              <p class="mb-0 small text-muted">Gastos del mes</p>
+              <h4 class="mb-0 text-terracota" id="kpi-gastos">$0.00</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card resumen-card">
+            <div class="card-body">
+              <div class="icon-badge bg-oro-suave"><i class="bi bi-piggy-bank"></i></div>
+              <p class="mb-0 small text-muted">Ahorrado en metas</p>
+              <h4 class="mb-0 text-oro" id="kpi-ahorro">$0.00</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <!-- Tipo de cambio (API RESTful) -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <div>
+                  <h6 class="mb-1"><i class="bi bi-currency-exchange"></i> Tipo de cambio de hoy</h6>
+                  <p class="small text-muted mb-0" id="tc-actualizado">Consultando servicio…</p>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary" id="btn-refrescar-tc">
+                  <i class="bi bi-arrow-clockwise"></i> Actualizar
+                </button>
+              </div>
+
+              <div id="tc-contenido" class="mt-3">
+                <div class="d-flex align-items-center gap-2 text-muted" id="tc-cargando" role="status">
+                  <span class="spinner-border spinner-border-sm"></span>
+                  <span>Obteniendo tasas desde la API…</span>
+                </div>
+
+                <div id="tc-error" class="alert alert-warning py-2 px-3 mb-0 d-none">
+                  <i class="bi bi-exclamation-triangle"></i>
+                  No se pudo conectar con el servicio de tipo de cambio. Mostrando el último valor guardado (si existe).
+                </div>
+
+                <div id="tc-valores" class="row g-3 d-none">
+                  <div class="col-6 col-md-3">
+                    <div class="tc-chip">
+                      <span class="tc-chip-label">1 USD</span>
+                      <span class="tc-chip-value" id="tc-usd">—</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="tc-chip">
+                      <span class="tc-chip-label">1 EUR</span>
+                      <span class="tc-chip-value" id="tc-eur">—</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h6 class="mb-3">Últimos movimientos</h6>
+              <div id="lista-ultimos" class="d-flex flex-column gap-2"></div>
+              <p id="ultimos-vacio" class="text-muted text-center py-4 d-none">Aún no hay movimientos registrados.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h6 class="mb-3">Gastos por categoría (este mes)</h6>
+              <div id="lista-categorias" class="d-flex flex-column gap-3"></div>
+              <p id="categorias-vacio" class="text-muted text-center py-4 d-none">Sin gastos registrados este mes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VISTA: MOVIMIENTOS ===================== -->
+    <section id="view-movimientos" class="view d-none">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">Movimientos</h2>
+        <div class="btn-group" role="group">
+          <button class="btn btn-sm btn-filtro active" data-filtro="todos">Todos</button>
+          <button class="btn btn-sm btn-filtro" data-filtro="ingreso">Ingresos</button>
+          <button class="btn btn-sm btn-filtro" data-filtro="gasto">Gastos</button>
+        </div>
+      </div>
+      <div id="lista-movimientos" class="d-flex flex-column gap-2"></div>
+      <p id="movimientos-vacio" class="text-muted text-center py-5 d-none">
+        Aún no tienes movimientos registrados. Usa "Nuevo movimiento" para empezar.
+      </p>
+    </section>
+
+    <!-- ===================== VISTA: METAS ===================== -->
+    <section id="view-metas" class="view d-none">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">Metas de ahorro</h2>
+        <button class="btn btn-oro fw-semibold btn-sm" data-bs-toggle="modal" data-bs-target="#modalMeta">
+          <i class="bi bi-plus-circle"></i> Nueva meta
+        </button>
+      </div>
+      <div id="lista-metas" class="row g-3"></div>
+      <p id="metas-vacio" class="text-muted text-center py-5 d-none">
+        Todavía no tienes metas. ¡Crea la primera!
+      </p>
+    </section>
+
+    <!-- ===================== VISTA: APRENDE ===================== -->
+    <section id="view-aprende" class="view d-none">
+      <h2 class="mb-1">Aprende</h2>
+      <p class="text-muted mb-4">Conceptos básicos de educación financiera, explicados simple.</p>
+      <div class="row g-3" id="lista-aprende"></div>
+    </section>
+
+  </main>
+
+  <!-- ===== NAV INFERIOR (celular) ===== -->
+  <nav class="navbar-bottom d-md-none">
+    <a href="#" class="nav-bottom-item active" data-view="inicio"><i class="bi bi-house"></i><span>Inicio</span></a>
+    <a href="#" class="nav-bottom-item" data-view="movimientos"><i class="bi bi-list-ul"></i><span>Movs.</span></a>
+    <button class="nav-bottom-add" data-bs-toggle="modal" data-bs-target="#modalMovimiento"><i class="bi bi-plus-lg"></i></button>
+    <a href="#" class="nav-bottom-item" data-view="metas"><i class="bi bi-piggy-bank"></i><span>Metas</span></a>
+    <a href="#" class="nav-bottom-item" data-view="aprende"><i class="bi bi-mortarboard"></i><span>Aprende</span></a>
+  </nav>
+
+  <!-- ===== MODAL: NUEVO MOVIMIENTO ===== -->
+  <div class="modal fade" id="modalMovimiento" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="form-movimiento">
+          <div class="modal-header">
+            <h5 class="modal-title">Nuevo movimiento</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="btn-group w-100 mb-3" role="group">
+              <input type="radio" class="btn-check" name="tipo" id="tipo-ingreso" value="ingreso" checked>
+              <label class="btn btn-outline-verde" for="tipo-ingreso"><i class="bi bi-arrow-down-circle"></i> Ingreso</label>
+              <input type="radio" class="btn-check" name="tipo" id="tipo-gasto" value="gasto">
+              <label class="btn btn-outline-terracota" for="tipo-gasto"><i class="bi bi-arrow-up-circle"></i> Gasto</label>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              <input type="text" class="form-control" id="mov-descripcion" placeholder="Ej. Domingo, Camión, Café" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Categoría</label>
+              <select class="form-select" id="mov-categoria" required>
+                <option value="comida">🍔 Comida</option>
+                <option value="transporte">🚌 Transporte</option>
+                <option value="entretenimiento">🎬 Entretenimiento</option>
+                <option value="escuela">🎒 Escuela</option>
+                <option value="ropa">👕 Ropa</option>
+                <option value="ahorro">🐷 Ahorro</option>
+                <option value="otro">✨ Otro</option>
+              </select>
+            </div>
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label">Monto</label>
+                <input type="number" class="form-control" id="mov-monto" min="0.01" step="0.01" placeholder="$0.00" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="mov-fecha" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-oro fw-semibold">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: NUEVA META ===== -->
+  <div class="modal fade" id="modalMeta" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="form-meta">
+          <div class="modal-header">
+            <h5 class="modal-title">Nueva meta de ahorro</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">¿Para qué es tu meta?</label>
+              <input type="text" class="form-control" id="meta-nombre" placeholder="Ej. Audífonos nuevos" required>
+            </div>
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label">Monto objetivo</label>
+                <input type="number" class="form-control" id="meta-objetivo" min="1" step="0.01" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Ya tengo ahorrado (opcional)</label>
+                <input type="number" class="form-control" id="meta-inicial" min="0" step="0.01" value="0">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-oro fw-semibold">Crear meta</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ABONAR A META ===== -->
+  <div class="modal fade" id="modalAbono" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="form-abono">
+          <input type="hidden" id="abono-meta-id">
+          <div class="modal-header">
+            <h5 class="modal-title">Abonar a meta</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-2">Meta: <strong id="abono-meta-nombre"></strong></p>
+            <label class="form-label">¿Cuánto quieres abonar?</label>
+            <input type="number" class="form-control" id="abono-monto" min="0.01" step="0.01" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-oro fw-semibold">Abonar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
